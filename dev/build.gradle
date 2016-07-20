@@ -1,0 +1,70 @@
+apply plugin: 'maven'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+
+group = 'ee'
+version = 'dev-SNAPSHOT'
+
+try {
+	apply from: file('repos.gradle').absolutePath
+}catch(e) {
+	println e
+}
+
+dependencies {
+    //compile 'org.codehaus.groovy:groovy-all:2.4.6'
+    compile 'ee.mdd:ee-mdd-core:1.0-SNAPSHOT'
+    compile 'org.codehaus.groovy:groovy-ant:2.4.6'
+    compile 'org.codehaus.groovy:groovy-json:2.4.6'
+    compile 'org.slf4j:slf4j-ext:1.7.16'
+    compile 'javax.enterprise:cdi-api:1.2'
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'javax.mail:mail:1.5.0-b01'
+    compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+    compile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-maven:2.2.2'
+
+    runtime 'ch.qos.logback:logback-classic:1.1.5'
+    runtime 'org.slf4j:log4j-over-slf4j:1.7.16'
+    runtime 'org.slf4j:jcl-over-slf4j:1.7.16'
+    runtime 'org.slf4j:jul-to-slf4j:1.7.16'
+
+    testCompile 'junit:junit:4.12'
+
+}
+
+/*
+distributions {
+    main {
+        baseName = 'someName'
+        contents {
+            from { 'src/main/resources' }
+            from configurations.runtime
+        }
+    }
+}
+*/
+
+uploadArchives {
+    repositories {
+        flatDir {
+            dirs '../lib'
+        }
+    }
+}
+
+/*
+task distDev(type: Copy) {
+    into '../lib'
+    from './build/libs/*.jar'
+}
+*/
+
+task distDir(type: Copy, dependsOn: 'uploadArchives') {
+    into '../lib'
+    from configurations.runtime
+}
+
+
+task cleanDist(type: Delete) {
+    delete fileTree(dir: '../lib')
+}

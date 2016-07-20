@@ -1,0 +1,7 @@
+buildscript {
+  repositories {
+    flatDir { dirs './lib' }
+  }
+
+  dependencies { classpath 'ee:ee-cli:dev-SNAPSHOT' }
+}
