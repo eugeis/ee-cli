@@ -17,7 +17,7 @@ abstract class AbstractBuildExt extends AbstractItemsExt {
     @NotNull
     BuildToolImpl buildTool
 
-    protected Result deploy(List items, BuildRequest request) {
+    protected Result build(List items, BuildRequest request) {
         Result ret = execute(items, { it.build(request) })
         ret
     }
@@ -32,6 +32,12 @@ abstract class AbstractBuildExt extends AbstractItemsExt {
                     context: buildItemHome,
                     info: "The item $buildItemHome is not supported whether by Maven nor by Gradle.")
         }
+        ret
+    }
+
+    protected BuildRequest buildRequest(List<String> tasks) {
+        BuildRequest ret = buildTool.buildRequest()
+        tasks.each { ret.task(it) }
         ret
     }
 

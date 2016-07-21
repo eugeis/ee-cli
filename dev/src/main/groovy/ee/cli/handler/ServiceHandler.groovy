@@ -15,13 +15,13 @@ class ServiceHandler extends JsonModelBasedHandler {
         classNameResolver = { String className -> "ee.cli.service.${className.capitalize()}Service" }
     }
 
-    protected def executeCallMethod(service, String methodName) {
+    protected def executeCallMethod(service, String methodName, def params = null) {
         if ('start'.equalsIgnoreCase(methodName)) {
             startService((Service) service)
         } else if ('stop'.equalsIgnoreCase(methodName)) {
             stopService((Service) service)
         } else {
-            super.executeCallMethod(service, methodName)
+            super.executeCallMethod(service, methodName, params)
         }
     }
 

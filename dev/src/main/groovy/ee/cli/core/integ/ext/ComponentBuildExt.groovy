@@ -7,6 +7,24 @@ class ComponentBuildExt extends AbstractBuildExt {
 
     protected void doExtend() {
 
+        AbstractCollection.metaClass.build = {
+            build(delegate, buildRequest())
+        }
+
+        AbstractCollection.metaClass.build = { Map<String, Object> params ->
+            BuildRequest request = buildRequest(params)
+            build(delegate, request)
+        }
+
+        ArrayList.metaClass.build = {
+            build(delegate, buildRequest())
+        }
+
+        ArrayList.metaClass.build = { Map<String, Object> params ->
+            BuildRequest request = buildRequest(params)
+            build(delegate, request)
+        }
+
         StructureUnit.metaClass.build = {
             StructureUnit item = delegate
             item.build(buildRequest())
@@ -15,6 +33,12 @@ class ComponentBuildExt extends AbstractBuildExt {
         StructureUnit.metaClass.build = { Map<String, Object> params ->
             StructureUnit item = delegate
             BuildRequest request = buildRequest(params)
+            item.build(request)
+        }
+
+        StructureUnit.metaClass.build = { List<String> tasks ->
+            StructureUnit item = delegate
+            BuildRequest request = buildRequest(tasks)
             item.build(request)
         }
 

@@ -11,7 +11,7 @@ class TestBase {
     @BeforeClass
     static void beforeClassBaseTest() {
         new StaticExtensions().extend()
-        //System.setProperty('nop', 'true')
+        System.setProperty('nop', 'true')
         System.setProperty('home', 'D:/CG')
         //System.setProperty('home', 'F:\\views\\temp\\ws')
     }

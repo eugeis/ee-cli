@@ -36,6 +36,8 @@ class WildFlyService extends SocketService {
     @Inject
     @NotNull
     String managementPassword = 'admin'
+    @Inject
+    Map defaultParams = [:]
 
     @PostConstruct
     void init() {
@@ -44,15 +46,19 @@ class WildFlyService extends SocketService {
 
     @Valid
     def start(Map<String, Object> params = null) {
+        def currentParams = [:]
+        if(defaultParams) {
+            currentParams.putAll(defaultParams)
+        }
         def dbParams = params?.findAll { k, v -> k.startsWith('db.') }
         if (dbParams) {
             //remove after refactoring WildFly start parameters
             String address = "${dbParams['db.host']}:${dbParams['db.port']}"
-            params['database.serv1.address'] = address
-            params['database.serv2.address'] = address
-            params['database.addresses'] = address
+            currentParams['database.serv1.address'] = address
+            currentParams['database.serv2.address'] = address
+            currentParams['database.addresses'] = address
         }
-        tool.start configFile, host, port, params
+        tool.start configFile, host, port, currentParams
     }
 
     @Valid

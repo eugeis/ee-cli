@@ -1,5 +1,6 @@
 package ee.cli.core.integ.ext
 
+import ee.cli.core.model.BuildRequest
 import ee.cli.core.model.Result
 import ee.mdd.model.component.Component
 import ee.mdd.model.component.Model
@@ -8,6 +9,14 @@ import ee.mdd.model.component.Module
 class ComponentAppSrvExt extends AbstractAppSrvExt {
 
     protected void doExtend() {
+
+        AbstractCollection.metaClass.deploy = {
+            deploy(delegate)
+        }
+
+        ArrayList.metaClass.deploy = {
+            deploy(delegate)
+        }
 
         Model.metaClass.deploy = {
             Model item = delegate

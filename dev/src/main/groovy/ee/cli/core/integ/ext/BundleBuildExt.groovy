@@ -12,6 +12,12 @@ class BundleBuildExt extends AbstractBuildExt {
             item.build(buildRequest())
         }
 
+        Bundle.metaClass.build = { List<String> tasks ->
+            Bundle item = delegate
+            BuildRequest request = buildRequest(tasks)
+            item.build(request)
+        }
+
         Bundle.metaClass.build = { Map<String, Object> params ->
             Bundle item = delegate
             BuildRequest request = buildRequest(params)
